@@ -1,0 +1,28 @@
+.banner
+{
+    color: white;
+    
+    display: flex;
+    justify-content: space-around;
+    gap: 1px;
+    
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    
+    width: 100vw;
+}
+
+#businessStats
+{
+    position: absolute;
+    top: 20px;
+    left: 20px;
+
+    color: white;
+}
+
+#moneyContainer
+{
+    color: green;
+}

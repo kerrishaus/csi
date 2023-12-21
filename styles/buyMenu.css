@@ -1,0 +1,118 @@
+#buyMenu
+{
+    box-sizing: border-box;
+
+    /* // TODO: use entire screen on mobile */
+    width: 80vw;
+    height: 80vh;
+
+    position: absolute;
+    z-index: 100;
+    top: calc(20vh);
+    left: 10vw;
+
+    border-radius: 10px 10px 0 0;
+    /* // TODO: don't show a border on mobile */
+    border: 10px solid #000000bb;
+    border-bottom: 0;
+
+    padding: 40px;
+    padding-bottom: 0;
+
+    background-color: #ffffffe7;
+
+    transition: top 0.25s;
+}
+
+#buyMenu[data-visibility="hidden"]
+{
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-select: none;
+
+    top: 100vh;
+}
+
+#buyMenu[data-visibility="shown"]
+{
+    pointer-events: all;
+    user-select: all;
+    -webkit-user-select: all;
+}
+
+#buyMenu #tiles
+{
+    gap: 10px;
+}
+
+#buyMenu #tiles .tile
+{
+    border-radius: 5px;
+
+    background-color: whitesmoke;
+    border: 1px solid gray;
+
+    overflow: hidden;
+
+    min-width: 10vw;
+    flex-grow: 1;
+}
+
+#buyMenu #tiles .tile .tile-name
+{
+    padding: 5px 10px;
+}
+
+#buyMenu #tiles .tile .tile-bottom-bar
+{
+    display: flex;
+}
+
+#buyMenu #tiles .tile .tile-bottom-bar .tile-price
+{
+    background-color: #6c757d;
+    color: white;
+    padding: 5px;
+}
+
+#buyMenu #tiles .tile .tile-bottom-bar .tile-buy
+{
+    background-color: #28a745;
+    color: white;
+    border: none;
+    flex-grow: 1;
+}
+
+#buyMenu #tiles .tile .tile-bottom-bar .tile-buy:hover
+{
+    background-color: #1e7e34;
+}
+
+#buyMenu #upgrades
+{
+    overflow: auto;
+}
+
+.buyItem
+{
+    background-color: gray;
+    padding: 10px 20px;
+    border-radius: 10px;
+}
+
+#employees
+{
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+#employees .employee
+{
+    width: 64px;
+    height: 128px;
+
+    background-color: gray;
+
+    border: 1px solid darkgray;
+}
