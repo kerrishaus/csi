@@ -16,60 +16,6 @@ export class PlayState extends State
     init()
     {
         PageUtility.addStyle("game");
-        PageUtility.addStyle("interface");
-        PageUtility.addStyle("banner");
-        PageUtility.addStyle("buyMenu");
-        PageUtility.addStyle("pauseMenu");
-
-        $(document.body).append(`
-            <div id='interface' class="gameInterfaceContainer">
-                <div id="pauseMenu" class="game-menu" data-visibility="hidden">
-                    <button id="resetSave">reset save file</button>
-                </div>
-                <div id="businessStats">
-                    <div id="moneyContainer">
-                        <i class='fa fa-money'></i> Money: $<span id='money'>0</span>
-                    </div>
-                    <div id="reputationContainer">
-                        <i class='fa fa-shield'></i> Reputation: <span id='reputation'>0</span>
-                    </div>
-                    <div>
-                        <i class='fa fa-users'></i> Customers in store: <span id="customerCount">0</span>
-                    </div>
-                    <div>
-                        <i class='fa fa-users'></i> Customers waiting to checkout: <span id="waitingCustomers">0</span>
-                    </div>
-                </div>
-                <div id="buyMenu" class="game-menu" data-visibility="hidden">
-                    <div class="titlebar display-flex space-between">
-                        <h1>Buy Menu</h1>
-                        <div id="buyMenuClose">
-                            <i class="fas fa-times"></i>
-                        </div>
-                    </div>
-                    <hr />
-                    <div class="buy-menu-container">
-                        <h1>Shop Upgrades</h1>
-                        <div id="shopUpgrades">
-                        </div>
-                    </div>
-                    <div class="buy-menu-container">
-                        <h1>Tiles</h1>
-                        <div id="tiles" class="display-flex flex-wrap">
-                        </div>
-                    </div>
-                    <div class="buy-menu-container">
-                        <h1>Employees</h1>
-                        <button id="hireEmployee">Hire Employee</button>
-                        <div id="employees">
-                        </div>
-                    </div>
-                </div>
-                <div id="saveIcon">
-                    <i class="fas fa-spinner fa-spin"></i>
-                </div>
-            </div>
-        `);
 
         window.oncontextmenu = (event) =>
         {
@@ -132,10 +78,6 @@ export class PlayState extends State
     cleanup()
     {
         PageUtility.removeStyle("game");
-        PageUtility.removeStyle("banner");
-        PageUtility.removeStyle("interface");
-        PageUtility.removeStyle("buyMenu");
-        PageUtility.removeStyle("pauseMenu");
 
         player.removeEventListeners();
 
@@ -167,49 +109,6 @@ export class PlayState extends State
     {
         $("#pauseMenu").attr("data-visibility", "hidden");
         player.enableMovement();
-    }
-
-    physicsStep(deltaTime)
-    {
-        physicsWorld.stepSimulation(deltaTime, 10);
-
-        for (const object of physicsBodies)
-        {
-            object.motionState.getWorldTransform(tmpTransform);
-
-            const pos = tmpTransform.getOrigin();
-            const quat = tmpTransform.getRotation();
-            const pos3 = new THREE.Vector3(pos.x(), pos.y(), pos.z());
-            const quat3 = new THREE.Quaternion(quat.x(), quat.y(), quat.z(), quat.w());
-            
-            object.position.copy(pos3);
-            object.quaternion.copy(quat3);
-        }
-
-        detectCollision();
-    }
-
-    detectCollision()
-    {
-        let dispatcher = physicsWorld.getDispatcher();
-        let numManifolds = dispatcher.getNumManifolds();
-
-        for ( let i = 0; i < numManifolds; i ++ )
-        {
-            let contactManifold = dispatcher.getManifoldByIndexInternal( i );
-            let numContacts = contactManifold.getNumContacts();
-
-            for ( let j = 0; j < numContacts; j++ )
-            {
-                let contactPoint = contactManifold.getContactPoint( j );
-                let distance = contactPoint.getDistance();
-
-                if (distance > 0.0)
-                    continue;
-
-                //console.log({manifoldIndex: i, contactIndex: j, distance: distance});
-            }
-        }
     }
     
     animate()
@@ -310,7 +209,7 @@ export class PlayState extends State
                 object.update(deltaTime);
         });
 
-        //physicsStep(deltaTime);
+        //scene.physicsStep(deltaTime);
 
         if (this.freeCam)
             freeControls.update();
