@@ -63,9 +63,10 @@ export class StartupState extends State
 
             window.renderer = new THREE.WebGLRenderer({
                 antialias: true,
-                shadowMap: true
+                shadowMap: true,
             });
             renderer.shadowMap.enabled = true;
+            renderer.shadowMap.autoUpdate = true;
             renderer.shadowMap.type = THREE.PCFSoftShadowMap;
             renderer.setSize(window.innerWidth, window.innerHeight);
             document.body.appendChild(renderer.domElement);

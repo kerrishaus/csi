@@ -11,19 +11,30 @@ export class Lightbar extends Entity
     {
         super();
 
-        this.geometry = this.addComponent(new GeometryComponent(
-            new THREE.BoxGeometry(10, 1, 1),
+        this.mesh = this.addComponent(new GeometryComponent(
+            new THREE.BoxGeometry(4, 0.2, 1),
             new THREE.MeshStandardMaterial({ color: 0xEEEEEE })
-        ));
+        )).mesh;
+
+        this.mesh.position.y = 2.1;
 
         this.lights = [];
 
-        for (let i = 0; i < 10; i++)
+        for (let i = 0; i < 5; i++)
         {
-            const light = new THREE.PointLight(i % 2 ? 0xff0000 : 0x0000ff, 0.5, 15);
-            light.position.set(0, i + 1, 2);
+            const light = new THREE.PointLight(i % 2 ? 0xff0000 : 0x0000ff, 0.05, 25);
+            light.position.set(this.mesh.position.x - this.mesh.scale.x + i, this.mesh.position.y, this.mesh.position.z - (this.mesh.scale.z / 2));
             light.castShadow = true
-            scene.add(light);
+            this.mesh.add(light);
+            this.lights.push(light);
+        }
+
+        for (let i = 0; i < 5; i++)
+        {
+            const light = new THREE.PointLight(i % 2 ? 0xff0000 : 0x0000ff, 0.05, 25);
+            light.position.set(this.mesh.position.x - this.mesh.scale.x + i, this.mesh.position.y, this.mesh.position.z + (this.mesh.scale.z / 2));
+            light.castShadow = true
+            this.mesh.add(light);
             this.lights.push(light);
         }
     }

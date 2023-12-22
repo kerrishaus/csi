@@ -81,10 +81,9 @@ export class PlayState extends State
         this.clock = new THREE.Clock();
 
         const shopFloor = new THREE.Mesh(
-            new THREE.PlaneGeometry(10, 10),
-            new THREE.MeshStandardMaterial({ color: 0xE0E0E0, side: THREE.DoubleSide })
+            new THREE.PlaneGeometry(20, 20),
+            new THREE.MeshStandardMaterial({ color: 0xE0E0E0, side: THREE.FrontSide })
         );
-        shopFloor.castShadow = true;
         shopFloor.receiveShadow = true;
         shopFloor.position.set(0, 0, 0);
         shopFloor.rotateX(- Math.PI / 2);
@@ -103,28 +102,12 @@ export class PlayState extends State
         //scene.add(backroomFloor);
 
         /*
-        const light = new THREE.DirectionalLight(0xffffff, 0.5);
-        light.position.set(0, 5, 0);
-        light.target.position.set(0, 0, 0);
-        light.castShadow = true
-        light.shadow.mapSize.width = 4096;
-        light.shadow.mapSize.height = 4096;
-        light.shadow.camera.near = 0.5;
-        light.shadow.camera.far = 40;
-        light.shadow.camera.left = -40;
-        light.shadow.camera.right = 40;
-        light.shadow.camera.top = 40;
-        light.shadow.camera.bottom = -40;
-        scene.add(light);
-        */
-
         const light2 = new THREE.AmbientLight(0xaaaaaa);
         scene.add(light2);
+        */
         
-        /*
         this.policeCar = new PoliceCar();
         scene.add(this.policeCar);
-        */
 
         window.player = new Player();
         scene.add(player);
