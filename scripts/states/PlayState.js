@@ -81,7 +81,7 @@ export class PlayState extends State
         this.clock = new THREE.Clock();
 
         const shopFloor = new THREE.Mesh(
-            new THREE.PlaneGeometry(20, 20),
+            new THREE.PlaneGeometry(50, 50),
             new THREE.MeshStandardMaterial({ color: 0xE0E0E0, side: THREE.FrontSide })
         );
         shopFloor.receiveShadow = true;
@@ -89,25 +89,13 @@ export class PlayState extends State
         shopFloor.rotateX(- Math.PI / 2);
         scene.add(shopFloor);
 
-        // shop north wall
-        //const northWall = GeometryUtility.createCube(new THREE.Vector3(shopLength, 4, wallThickness), new THREE.Vector3(0, 1.5, shopWidth / 2 - wallThickness / 2 + 1), 0xbfbfbf);
-        //scene.add(northWall);
-
-        // west wall
-        //scene.add(GeometryUtil.createCube(new Vector3(wallThickness, shopWidth, 4), new Vector3(shopWidth / 2 - wallThickness / 2 + 1, 0, 1.5), 0xbfbfbf));
-        // east wall
-        //scene.add(GeometryUtil.createCube(new Vector3(wallThickness, shopWidth, 4), new Vector3(-shopWidth / 2 - wallThickness / 2, 0, 1.5), 0xbfbfbf));
-        
-        //const backroomFloor = new RigidBodyCube(new Vector3(shopWidth, shopLength / 2, wallThickness), 0x878787, new Vector3(0, -15, -1), new Quaternion(), 0);
-        //scene.add(backroomFloor);
+        this.worldLight = new THREE.AmbientLight(0x404040, 0.2); // soft white light
+        scene.add(this.worldLight);
 
         /*
-        const light2 = new THREE.AmbientLight(0xaaaaaa);
-        scene.add(light2);
-        */
-        
         this.policeCar = new PoliceCar();
         scene.add(this.policeCar);
+        */
 
         window.player = new Player();
         scene.add(player);

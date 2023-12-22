@@ -1,4 +1,4 @@
-import { Vector3, Vector2, Mesh, SphereGeometry, MeshPhongMaterial, BoxGeometry, MeshStandardMaterial, Plane, Raycaster } from "https://kerrishaus.com/assets/threejs/build/three.module.js";
+import * as THREE from "https://kerrishaus.com/assets/threejs/build/three.module.js";
 
 import * as GeometryUtil from "./GeometryUtility.js";
 
@@ -15,8 +15,8 @@ export class Player extends Entity
         this.addComponent(new ContainerComponent);
 
         const geometry = this.addComponent(new GeometryComponent(
-            new BoxGeometry(1, 2, 1),
-            new MeshStandardMaterial({ color: 0x0000ff })
+            new THREE.BoxGeometry(1, 2, 1),
+            new THREE.MeshStandardMaterial({ color: 0x0000ff })
         ));
 
         const nose = GeometryUtil.createScaledCube(0.4, 0.2, 0.6, 0x0000aa);
@@ -26,11 +26,6 @@ export class Player extends Entity
 
         geometry.mesh.position.y += 1;
         
-        this.money = 1000;
-        this.carriedMoney = new Array();
-
-        //this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 200);
-		        
         this.maxSpeed = 0.3;
 
         this.controlsEnabled = true;
@@ -43,13 +38,13 @@ export class Player extends Entity
 
         this.move = null;
         this.keys = new Array();
-        this.pointerMoveOrigin = new Vector2();
+        this.pointerMoveOrigin = new THREE.Vector2();
         this.moving = false;
         this.pointerMove = false;
         
-        this.moveTarget = new Mesh(
-            new SphereGeometry(0.25, 24, 8), 
-            new MeshPhongMaterial({ 
+        this.moveTarget = new THREE.Mesh(
+            new THREE.SphereGeometry(0.25, 24, 8), 
+            new THREE.MeshPhongMaterial({ 
                 color: 0x00ffff, 
                 flatShading: true,
                 transparent: true,
@@ -57,11 +52,30 @@ export class Player extends Entity
             })
         );
         
-        this.plane = new Plane(new Vector3(0, 0.5, 0), 0);
+        this.plane = new THREE.Plane(new THREE.Vector3(0, 0.5, 0), 0);
 
-        this.mouse      = new Vector2();
-        this.raycaster  = new Raycaster();
-        this.intersects = new Vector3();
+        this.mouse      = new THREE.Vector2();
+        this.raycaster  = new THREE.Raycaster();
+        this.intersects = new THREE.Vector3();
+
+        const intensity = 1, distance = 5, angle = 0.5, sharpness = 0.5, decay = 0;
+
+        this.spotLight = new THREE.SpotLight(0xffffff, intensity, distance, angle, sharpness, decay);
+        this.spotLight.position.set(0, 1, 0.5);
+        //this.spotLight.map = new THREE.TextureLoader().load( url );
+
+        this.spotLight.castShadow = true;
+        this.spotLight.shadow.mapSize.width = 1024;
+        this.spotLight.shadow.mapSize.height = 1024;
+        this.spotLight.shadow.camera.near = 0;
+        this.spotLight.shadow.camera.far = 40;
+        this.spotLight.shadow.camera.fov = 30;
+
+        this.add(this.spotLight);
+        this.add(this.spotLight.target);
+
+        this.spotLight.target.position.y = 0;
+        this.spotLight.target.position.z = 10;
     }
     
     update(deltaTime)
