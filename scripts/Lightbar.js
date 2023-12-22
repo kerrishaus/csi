@@ -20,7 +20,7 @@ export class Lightbar extends Entity
 
         this.lights = [];
 
-        for (let i = 0; i < 5; i++)
+        for (let i = 0; i < 2; i++)
         {
             const light = new THREE.PointLight(i % 2 ? 0xff0000 : 0x0000ff, 0.05, 25);
             light.position.set(this.mesh.position.x - this.mesh.scale.x + i, this.mesh.position.y, this.mesh.position.z - (this.mesh.scale.z / 2));
@@ -29,7 +29,7 @@ export class Lightbar extends Entity
             this.lights.push(light);
         }
 
-        for (let i = 0; i < 5; i++)
+        for (let i = 0; i < 2; i++)
         {
             const light = new THREE.PointLight(i % 2 ? 0xff0000 : 0x0000ff, 0.05, 25);
             light.position.set(this.mesh.position.x - this.mesh.scale.x + i, this.mesh.position.y, this.mesh.position.z + (this.mesh.scale.z / 2));

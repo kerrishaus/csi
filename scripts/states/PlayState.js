@@ -7,6 +7,7 @@ import * as PageUtility     from "../PageUtility.js";
 import * as GeometryUtility from "../GeometryUtility.js"
 
 import { Player } from "../Player.js";
+import { Killer } from "../Killer.js";
 import { PoliceCar } from "../PoliceCar.js";
 
 import { Entity } from "../entity/Entity.js";
@@ -35,16 +36,17 @@ export class PlayState extends State
         shopFloor.rotateX(- Math.PI / 2);
         scene.add(shopFloor);
 
-        this.worldLight = new THREE.AmbientLight(0x404040, 0.2); // soft white light
+        this.worldLight = new THREE.AmbientLight(0x404040, 1); // soft white light
         scene.add(this.worldLight);
 
-        /*
         this.policeCar = new PoliceCar();
         scene.add(this.policeCar);
-        */
 
         window.player = new Player();
         scene.add(player);
+
+        window.killer = new Killer(20);
+        scene.add(killer);
 
         player.registerEventListeners();
 

@@ -25,7 +25,7 @@ export class Player extends Entity
         geometry.mesh.add(nose);
 
         geometry.mesh.position.y += 1;
-        
+
         this.maxSpeed = 0.3;
 
         this.controlsEnabled = true;
@@ -67,8 +67,8 @@ export class Player extends Entity
         this.spotLight.castShadow = true;
         this.spotLight.shadow.mapSize.width = 1024;
         this.spotLight.shadow.mapSize.height = 1024;
-        this.spotLight.shadow.camera.near = 0;
-        this.spotLight.shadow.camera.far = 40;
+        this.spotLight.shadow.camera.near = 0.1;
+        this.spotLight.shadow.camera.far = 100;
         this.spotLight.shadow.camera.fov = 30;
 
         this.add(this.spotLight);
@@ -76,6 +76,10 @@ export class Player extends Entity
 
         this.spotLight.target.position.y = 0;
         this.spotLight.target.position.z = 10;
+
+        this.upperHitbox = new THREE.Object3D();
+        this.add(this.upperHitbox);
+        this.upperHitbox.position.y += 1.5;
     }
     
     update(deltaTime)
