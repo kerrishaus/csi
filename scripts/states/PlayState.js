@@ -16,8 +16,6 @@ export class PlayState extends State
 {
     init()
     {
-        PageUtility.addStyle("game");
-
         window.oncontextmenu = (event) =>
         {
             event.preventDefault();
@@ -39,8 +37,8 @@ export class PlayState extends State
         this.worldLight = new THREE.AmbientLight(0x404040, 1); // soft white light
         scene.add(this.worldLight);
 
-        this.policeCar = new PoliceCar();
-        scene.add(this.policeCar);
+        //this.policeCar = new PoliceCar();
+        //scene.add(this.policeCar);
 
         window.player = new Player();
         scene.add(player);
@@ -56,6 +54,8 @@ export class PlayState extends State
             {
                 this.freeCam = !this.freeCam;
                 freeControls.enabled = this.freeCam;
+                freeControls.target.copy(player.position);
+                freeControls.update();
 
                 camera.position.y = 8;
                 camera.lookAt(new THREE.Vector3(0, 0, 0));
@@ -79,8 +79,6 @@ export class PlayState extends State
 
     cleanup()
     {
-        PageUtility.removeStyle("game");
-
         player.removeEventListeners();
 
         window.onbeforeunload = null;
