@@ -68,11 +68,16 @@ export class Player extends Entity
         this.spotLight.shadow.mapSize.width = 1024;
         this.spotLight.shadow.mapSize.height = 1024;
         this.spotLight.shadow.camera.near = 0.1;
-        this.spotLight.shadow.camera.far = 100;
-        this.spotLight.shadow.camera.fov = 30;
+        this.spotLight.shadow.camera.far = 1000;
 
-        this.add(this.spotLight);
-        this.add(this.spotLight.target);
+        const helper = new THREE.CameraHelper(this.spotLight.shadow.camera);
+        scene.add(helper);
+
+        const directionalHelper = new THREE.DirectionalLightHelper(this.spotLight, 5);
+        scene.add(directionalHelper);
+
+        this.attach(this.spotLight);
+        this.attach(this.spotLight.target);
 
         this.spotLight.target.position.y = 0;
         this.spotLight.target.position.z = 10;
