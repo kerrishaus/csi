@@ -18,7 +18,7 @@ export class Killer extends Entity
         super();
 
         this.detectionRange = detectionRange;
-        this.killRange = killRange = this.detectionRange / 20;
+        this.killRange = this.detectionRange / 20;
         this.maxSpeed = 0.2;
 
         this.addComponent(new ContainerComponent);
