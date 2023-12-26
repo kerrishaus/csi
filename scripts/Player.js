@@ -22,7 +22,7 @@ export class Player extends Entity
         const nose = GeometryUtil.createScaledCube(0.4, 0.2, 0.6, 0x0000aa);
         nose.position.z = 0.5;
         nose.position.y = 0.6;
-        geometry.mesh.add(nose);
+        geometry.mesh.attach(nose);
 
         geometry.mesh.position.y += 1;
 
@@ -70,11 +70,13 @@ export class Player extends Entity
         this.spotLight.shadow.camera.near = 0.1;
         this.spotLight.shadow.camera.far = 1000;
 
+        /*
         const helper = new THREE.CameraHelper(this.spotLight.shadow.camera);
-        scene.add(helper);
+        scene.attach(helper);
 
         const directionalHelper = new THREE.DirectionalLightHelper(this.spotLight, 5);
-        scene.add(directionalHelper);
+        scene.attach(directionalHelper);
+        */
 
         this.attach(this.spotLight);
         this.attach(this.spotLight.target);
@@ -83,7 +85,7 @@ export class Player extends Entity
         this.spotLight.target.position.z = 10;
 
         this.upperHitbox = new THREE.Object3D();
-        this.add(this.upperHitbox);
+        this.attach(this.upperHitbox);
         this.upperHitbox.position.y += 1.5;
     }
     

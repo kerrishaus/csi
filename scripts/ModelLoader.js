@@ -18,8 +18,6 @@ export async function loadModel(modelName)
 
     const model = await loader.loadAsync(`models/${modelName}.glb`);
 
-    console.log(model);
-
     // TODO: there is probably a better solution to this
     // all models currently need a metalness of 0 or they
     // are rendered with very little lighting
