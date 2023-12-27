@@ -225,6 +225,15 @@ export class Killer extends Entity
                     const rotation = - MathUtility.angleToPoint(new THREE.Vector2(this.position.x, this.position.z), new THREE.Vector2(action.position.x, action.position.z));
                     this.rotation.y = rotation;
                     this.translateZ(this.maxSpeed);
+
+                    const distanceToTarget = this.position.distanceTo(action.position);
+
+                    if (distanceToTarget < 0.5)
+                    {
+                        console.log("Got within threshold of targetPosition, next action.");
+                        this.position.copy(action.position);
+                        this.nextAction();
+                    }
                 }
             }
         }

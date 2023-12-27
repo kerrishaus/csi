@@ -46,6 +46,8 @@ export class PlayState extends State
         window.killer = new Killer(20);
         scene.add(killer);
 
+        killer.position.set(20, 0, 0);
+
         player.registerEventListeners();
 
         window.addEventListener("keydown", (event) =>
