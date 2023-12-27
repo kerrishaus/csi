@@ -43,11 +43,14 @@ export class PlayState extends State
         window.player = new Player();
         scene.add(player);
 
+        // TODO: find a better hack for this
         window.killer = new Killer(20);
-        scene.add(killer);
-
         killer.position.set(20, 0, 0);
-
+        killer.getComponent("TriggerComponent").triggerEnabled = false;
+        killer.update(0);
+        killer.getComponent("TriggerComponent").triggerEnabled = true;
+        scene.add(killer);
+        
         player.registerEventListeners();
 
         window.addEventListener("keydown", (event) =>
@@ -84,19 +87,6 @@ export class PlayState extends State
         player.removeEventListeners();
 
         window.onbeforeunload = null;
-    }
-
-    openBuyMenu()
-    {
-        $(".game-menu").attr("data-visibility", "hidden");
-        $("#buyMenu").attr("data-visibility", "shown");
-        player.disableMovement();
-    }
-
-    closeBuyMenu()
-    {
-        $("#buyMenu").attr("data-visibility", "hidden");
-        player.enableMovement();
     }
 
     openPauseMenu()
@@ -192,16 +182,16 @@ export class PlayState extends State
                 scene.children.forEach((object2) =>
                 {
                     if (object2 == object ||
+                        object2.dontTrigger ||
                         object2.parentEntity == object ||
-                        object.parentEntity == object2 ||
-                        object2.dontTrigger)
+                        object.parentEntity == object2)
                         return;
 
                     if (object2 instanceof Entity && object2.hasComponent("GeometryComponent"))
                     {
                         const geometryComponent = object2.getComponent("GeometryComponent");
 
-                        if (triggerComponent.box.intersectsBox(geometryComponent.box))
+                        if (triggerComponent.triggerGeometry.userData.obb.intersectsOBB(geometryComponent.mesh.userData.obb))
                             triggerComponent.triggeringEntities.push(object2);
                     }
                 });

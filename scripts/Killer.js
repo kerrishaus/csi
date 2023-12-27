@@ -20,6 +20,9 @@ export class Killer extends Entity
         this.detectionRange = detectionRange;
         this.killRange = this.detectionRange / 20;
         this.maxSpeed = 0.2;
+        // how close the distance to the target position has to be
+        // to consider it reached
+        this.targetPositionDistanceThreshold = 0.1;
 
         this.addComponent(new ContainerComponent);
 
@@ -101,6 +104,11 @@ export class Killer extends Entity
             this.moveTarget.position.copy(action.position);
             this.actionTime = -1;
         }
+        else if (action.type == "roam")
+        {
+            this.moveTarget.position.copy(action.position);
+            this.actionTime = -1;
+        }
 
         this.labelDiv.textContent = action.type;
         
@@ -167,36 +175,44 @@ export class Killer extends Entity
 
                 this.lastSeenPlayer = object;
 
-                if (this.actions.length > 0)
+                if (distance < this.killRange)
                 {
-                    if (this.actions[0].type != "chasePlayer")
+                    if (this.actions.length > 0)
                     {
-                        console.log("dropping tasks and chasing a player");
+                        if (this.actions[0].type != "chasePlayer")
+                        {
+                            console.log("dropping tasks and chasing a player");
 
-                        this.actions.length = 0;
-                        this.actions.push({ type: "chasePlayer", position: object.position.clone() });
-                        this.focusAction(this.actions[0]);    
+                            this.actions.length = 0;
+                            this.actions.push({ type: "chasePlayer", position: object.position.clone() });
+                            this.focusAction(this.actions[0]);    
+                        }
+                        else
+                        {
+                            console.log("updating chased player's position");
+
+                            this.actions[0].position = object.position.clone();
+                            this.moveTarget.position.copy(this.actions[0].position);
+                        }
                     }
                     else
                     {
-                        console.log("updating chased player's position");
+                        console.log("chasing a player")
 
-                        this.actions[0].position = object.position.clone();
-                        this.moveTarget.position.copy(this.actions[0].position);
+                        this.actions.length = 0;
+                        this.actions.push({ type: "chasePlayer", position: object.position.clone() });
+                        this.focusAction(this.actions[0]);
                     }
                 }
                 else
                 {
-                    console.log("chasing a player")
-
-                    this.actions.length = 0;
-                    this.actions.push({ type: "chasePlayer", position: object.position.clone() });
-                    this.focusAction(this.actions[0]);
+                    console.log("kill the player");
+                    //window.location.reload();
                 }
-            }
 
-            this.arrowHelper = new THREE.ArrowHelper(raycaster.ray.direction, raycaster.ray.origin, distance, foundPlayer ? 0x00ff00 : 0xff0000);
-            scene.add(this.arrowHelper);
+                this.arrowHelper = new THREE.ArrowHelper(raycaster.ray.direction, raycaster.ray.origin, distance, foundPlayer ? 0x00ff00 : 0xff0000);
+                scene.add(this.arrowHelper);
+            }
         }
     }
 
@@ -228,7 +244,7 @@ export class Killer extends Entity
 
                     const distanceToTarget = this.position.distanceTo(action.position);
 
-                    if (distanceToTarget < 0.5)
+                    if (distanceToTarget < this.targetPositionDistanceThreshold)
                     {
                         console.log("Got within threshold of targetPosition, next action.");
                         this.position.copy(action.position);

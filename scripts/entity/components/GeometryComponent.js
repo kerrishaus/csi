@@ -1,4 +1,6 @@
-import { Mesh, Box3 } from "https://kerrishaus.com/assets/threejs/build/three.module.js";
+import { Mesh } from "https://kerrishaus.com/assets/threejs/build/three.module.js";
+
+import { OBB } from 'https://kerrishaus.com/assets/threejs/examples/jsm/math/OBB.js';
 
 import { EntityComponent } from "./EntityComponent.js";
 
@@ -6,18 +8,19 @@ export class GeometryComponent extends EntityComponent
 {
     init(geometry, material)
     {
-        this.mesh = new Mesh(geometry, material);
+        geometry.userData.obb = new OBB();
+        geometry.userData.obb.halfSize.copy(geometry.scale).multiplyScalar(0.5);
 
+        this.mesh = new Mesh(geometry, material);
+        
         this.mesh.castShadow = true;
         this.mesh.receiveShadow = true;
-
-        this.mesh.geometry.computeBoundingBox();
+        
+        this.mesh.userData.obb = new OBB();
 
         // TODO: make sure it gets removed from the scene properly.
         // right now it just sits around wherever it was last
         this.parentEntity.attach(this.mesh);
-
-        this.box = new Box3();
 
         this.dontTrigger = false;
     }
@@ -50,13 +53,17 @@ export class GeometryComponent extends EntityComponent
             else
                 object.material.dispose()
         
-        scene.remove(object);
+        scene.remove(object); 
     }
     
     update(deltaTime)
     {
         super.update(deltaTime);
 
-        this.box.copy(this.mesh.geometry.boundingBox).applyMatrix4(this.mesh.matrixWorld);
+        this.mesh.updateMatrix();
+        this.mesh.updateMatrixWorld();
+
+        this.mesh.userData.obb.copy(this.mesh.geometry.userData.obb);
+        this.mesh.userData.obb.applyMatrix4(this.mesh.matrixWorld);
     }
 };
