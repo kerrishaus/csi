@@ -26,7 +26,6 @@ export class TriggerComponent extends EntityComponent
         this.triggeringEntities           = [];
 
         this.triggerEnabled = true;
-
         this.triggered = false;
     }
 
@@ -41,9 +40,6 @@ export class TriggerComponent extends EntityComponent
     update(deltaTime)
     {
         super.update(deltaTime);
-
-        this.triggerGeometry.updateMatrix();
-        this.triggerGeometry.updateMatrixWorld();
 
         this.triggerGeometry.userData.obb.copy(this.triggerGeometry.geometry.userData.obb);
         this.triggerGeometry.userData.obb.applyMatrix4(this.triggerGeometry.matrixWorld);

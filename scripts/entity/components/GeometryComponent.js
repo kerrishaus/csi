@@ -8,8 +8,6 @@ export class GeometryComponent extends EntityComponent
 {
     init(geometry, material)
     {
-        console.log(geometry);
-
         geometry.computeBoundingBox();
         geometry.userData.obb = new OBB().fromBox3(geometry.boundingBox);
 
@@ -61,9 +59,6 @@ export class GeometryComponent extends EntityComponent
     update(deltaTime)
     {
         super.update(deltaTime);
-
-        this.mesh.updateMatrix();
-        this.mesh.updateMatrixWorld();
 
         this.mesh.userData.obb.copy(this.mesh.geometry.userData.obb);
         this.mesh.userData.obb.applyMatrix4(this.mesh.matrixWorld);
