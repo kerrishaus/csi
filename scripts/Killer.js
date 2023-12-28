@@ -18,7 +18,7 @@ export class Killer extends Entity
         super();
 
         this.detectionRange = detectionRange;
-        this.killRange = this.detectionRange / 20;
+        this.killRange = 0.5;
         this.maxSpeed = 0.2;
         // how close the distance to the target position has to be
         // to consider it reached
@@ -35,7 +35,8 @@ export class Killer extends Entity
         )).mesh;
         this.mesh.position.y += 1;
         
-        this.forwardDirectionHelper = new THREE.ArrowHelper(this.forward, this.mesh.position, 2, 0xffff00);
+        this.forwardDirectionHelper = new THREE.ArrowHelper(this.forward, this.position, 1, 0xffff00);
+        this.forwardDirectionHelper.position.y += 1.5;
         this.add(this.forwardDirectionHelper);
         
         this.moveTarget = new THREE.Mesh(
@@ -145,6 +146,9 @@ export class Killer extends Entity
     {
         if (object instanceof Player)
         {
+            if (object.dead)
+                return;
+
             if (this.arrowHelper)
                 scene.remove(this.arrowHelper);
 
@@ -175,7 +179,7 @@ export class Killer extends Entity
 
                 this.lastSeenPlayer = object;
 
-                if (distance < this.killRange)
+                if (distance > this.killRange)
                 {
                     if (this.actions.length > 0)
                     {
@@ -189,8 +193,6 @@ export class Killer extends Entity
                         }
                         else
                         {
-                            console.log("updating chased player's position");
-
                             this.actions[0].position = object.position.clone();
                             this.moveTarget.position.copy(this.actions[0].position);
                         }
@@ -206,8 +208,8 @@ export class Killer extends Entity
                 }
                 else
                 {
-                    console.log("kill the player");
-                    //window.location.reload();
+                    console.log(object + " is dead!");
+                    object.die();
                 }
 
                 this.arrowHelper = new THREE.ArrowHelper(raycaster.ray.direction, raycaster.ray.origin, distance, foundPlayer ? 0x00ff00 : 0xff0000);

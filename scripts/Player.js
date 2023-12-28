@@ -1,7 +1,5 @@
 import * as THREE from "https://kerrishaus.com/assets/threejs/build/three.module.js";
 
-import * as GeometryUtil from "./GeometryUtility.js";
-
 import { Entity } from "./entity/Entity.js";
 import { GeometryComponent } from "./entity/components/GeometryComponent.js";
 import { ContainerComponent } from "./entity/components/ContainerComponent.js";
@@ -18,15 +16,19 @@ export class Player extends Entity
             new THREE.BoxGeometry(1, 2, 1),
             new THREE.MeshStandardMaterial({ color: 0x0000ff })
         ));
-
-        const nose = GeometryUtil.createScaledCube(0.4, 0.2, 0.6, 0x0000aa);
-        nose.position.z = 0.5;
-        nose.position.y = 0.6;
-        geometry.mesh.attach(nose);
-
+        
         geometry.mesh.position.y += 1;
 
+        this.forwardDirectionHelper = new THREE.ArrowHelper(this.forward, geometry.position, 1, 0xffff00);
+        this.forwardDirectionHelper.position.y += 1.5;
+        this.add(this.forwardDirectionHelper);
+
         this.maxSpeed = 0.3;
+
+        this.sprintSpeed = 0.3;
+        this.walkSpeed   = 0.2;
+
+        this.dead = false;
 
         this.controlsEnabled = true;
 
@@ -92,6 +94,15 @@ export class Player extends Entity
     update(deltaTime)
     {
         super.update(deltaTime);
+    }
+
+    die()
+    {
+        this.dead = true;
+
+        this.getComponent("GeometryComponent").mesh.material.color.setHex(0x000000);
+
+        console.log(this + " has died!");
     }
 
     disableMovement()
