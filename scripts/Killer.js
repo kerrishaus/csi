@@ -18,8 +18,10 @@ export class Killer extends Entity
         super();
 
         this.detectionRange = detectionRange;
-        this.killRange = 0.5;
-        this.maxSpeed = 0.2;
+        this.killRange   = 0.5;
+        this.maxSpeed    = 0.2;
+        this.sprintSpeed = 0.2;
+        this.walkSpeed   = 0.1;
         // how close the distance to the target position has to be
         // to consider it reached
         this.targetPositionDistanceThreshold = 0.1;
@@ -233,7 +235,7 @@ export class Killer extends Entity
                     action.type == "roam")
                     this.position.copy(action.position);
 
-                this.nextAction();   
+                this.nextAction();
             }
             else // the action time has not elapsed, meaning we should still be moving
             {
@@ -242,7 +244,10 @@ export class Killer extends Entity
                 {
                     const rotation = - MathUtility.angleToPoint(new THREE.Vector2(this.position.x, this.position.z), new THREE.Vector2(action.position.x, action.position.z));
                     this.rotation.y = rotation;
-                    this.translateZ(this.maxSpeed);
+
+                    const velocity = action.type == "chasePlayer" ? this.sprintSpeed : this.walkSpeed;
+
+                    this.translateZ(velocity);
 
                     const distanceToTarget = this.position.distanceTo(action.position);
 
