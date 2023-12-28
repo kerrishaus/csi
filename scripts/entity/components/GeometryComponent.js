@@ -8,14 +8,16 @@ export class GeometryComponent extends EntityComponent
 {
     init(geometry, material)
     {
-        geometry.userData.obb = new OBB();
-        geometry.userData.obb.halfSize.copy(geometry.scale).multiplyScalar(0.5);
+        console.log(geometry);
+
+        geometry.computeBoundingBox();
+        geometry.userData.obb = new OBB().fromBox3(geometry.boundingBox);
 
         this.mesh = new Mesh(geometry, material);
         
         this.mesh.castShadow = true;
         this.mesh.receiveShadow = true;
-        
+
         this.mesh.userData.obb = new OBB();
 
         // TODO: make sure it gets removed from the scene properly.
@@ -42,7 +44,7 @@ export class GeometryComponent extends EntityComponent
         {
             console.error("Object provided to dispose was invalid!");
             return;
-        }
+        };
         
         object.geometry?.dispose()
 

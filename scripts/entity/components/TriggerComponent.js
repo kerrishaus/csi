@@ -1,4 +1,4 @@
-import { Mesh, BoxGeometry, MeshStandardMaterial, BoxHelper } from "https://kerrishaus.com/assets/threejs/build/three.module.js";
+import { Mesh, BoxGeometry, MeshStandardMaterial, BoxHelper, Vector3 } from "https://kerrishaus.com/assets/threejs/build/three.module.js";
 
 import { OBB } from 'https://kerrishaus.com/assets/threejs/examples/jsm/math/OBB.js';
 
@@ -13,8 +13,8 @@ export class TriggerComponent extends EntityComponent
             new MeshStandardMaterial({ color: 0xff0000, transparent: true, opacity: 0.2 })
         );
 
-        this.triggerGeometry.geometry.userData.obb = new OBB();
-        this.triggerGeometry.geometry.userData.obb.halfSize.copy(this.triggerGeometry.geometry.scale).multiplyScalar(0.5);
+        this.triggerGeometry.geometry.computeBoundingBox();
+        this.triggerGeometry.geometry.userData.obb = new OBB().fromBox3(this.triggerGeometry.geometry.boundingBox);
 
         this.triggerGeometry.userData.obb = new OBB();
 
