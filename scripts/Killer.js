@@ -29,7 +29,8 @@ export class Killer extends Entity
         this.addComponent(new ContainerComponent);
 
         // TODO: replace this with a circle trigger
-        this.addComponent(new TriggerComponent(detectionRange, 1, detectionRange));
+        const trigger = this.addComponent(new TriggerComponent(detectionRange, 1, detectionRange / 2));
+        trigger.triggerGeometry.position.z += detectionRange / 4;
 
         this.mesh = this.addComponent(new GeometryComponent(
             new THREE.BoxGeometry(1, 2, 1),
